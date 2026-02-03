@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💕</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=DM+Sans:wght@400;500;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+--pink:#FFB3D9;
+--soft-pink:#FFE5F1;
+--coral:#FF8FAB;
+--beige:#FFF5E4;
+--soft-red:#FF6B9D;
+--cream:#FFFEF9;
+--text:#5A4A4A;
+}
+
+body{
+font-family:'DM Sans',sans-serif;
+background:linear-gradient(135deg,var(--beige),var(--soft-pink));
+color:var(--text);
+overflow-x:hidden;
+}
+
+/* Floating hearts */
+.bg-hearts{
+position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:1;
+}
+.heart-float{
+position:absolute;font-size:20px;
+animation:floatUp 15s linear infinite;
+opacity:0;
+}
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:0}
+10%,90%{opacity:.6}
+100%{transform:translateY(-100vh);opacity:0}
+}
+
+.container{max-width:900px;margin:auto;padding:20px;position:relative;z-index:2}
+
+/* Hero */
+.hero{text-align:center;padding:80px 20px}
+.hero h1{
+font-family:'Righteous',cursive;
+font-size:clamp(2.5rem,8vw,5rem);
+color:var(--soft-red);
+animation:bounce 2s infinite;
+}
+@keyframes bounce{50%{transform:translateY(-10px)}}
+.hero p{font-size:1.3rem;margin-top:15px}
+
+/* Buttons */
+.button-container{
+display:flex;gap:20px;justify-content:center;
+margin-top:40px;position:relative;min-height:140px;
+}
+.btn{
+font-family:'Fredoka',sans-serif;
+font-size:1.5rem;
+padding:20px 50px;
+border:none;border-radius:50px;
+cursor:pointer;font-weight:600;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+transition:.3s;
+}
+.btn-yes{
+background:linear-gradient(135deg,var(--soft-red),var(--coral));
+color:white;
+animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{transform:scale(1.05)}}
+
+.btn-no{
+background:#ddd;color:#555;
+position:relative;
+}
+.btn-no.running{position:absolute}
+
+/* Success */
+.success-section{
+display:none;text-align:center;padding:50px;
+}
+.success-section.show{display:block}
+
+/* Love Letter */
+.love-letter{
+background:white;border-radius:20px;
+padding:40px;margin:40px 0;
+box-shadow:0 10px 40px rgba(0,0,0,.1);
+}
+.envelope{
+width:200px;height:150px;margin:auto;cursor:pointer;
+}
+.envelope-body{
+width:100%;height:100%;
+background:linear-gradient(135deg,var(--soft-pink),var(--pink));
+border-radius:10px;position:relative;
+}
+.envelope-flap{
+position:absolute;top:0;width:100%;height:50%;
+background:linear-gradient(135deg,var(--coral),var(--soft-red));
+clip-path:polygon(0 0,100% 0,50% 100%);
+transform-origin:top;transition:.5s;
+}
+.envelope.open .envelope-flap{transform:rotateX(180deg)}
+.letter-content{max-height:0;overflow:hidden;transition:.5s}
+.envelope.open ~ .letter-content{max-height:2000px}
+.letter-text{
+background:var(--cream);padding:20px;border-radius:10px;
+font-style:italic;line-height:1.8;
+}
+
+/* Footer */
+footer{text-align:center;padding:40px}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MUSIC -->
+<audio id="bgMusic" loop>
+  <!-- OPTION 1: local file -->
+  <source src="love.mp3" type="audio/mpeg">
+
+  <!-- OPTION 2: online mp3 (replace if you want)
+  <source src="https://example.com/song.mp3" type="audio/mpeg">
+  -->
+</audio>
+
+<div class="bg-hearts" id="bgHearts"></div>
+
+<div class="container">
+
+<section class="hero">
+<h1>Will You Be My Valentine? 💕</h1>
+<p>Hey <b>Yash</b>… I have something special to ask you 💖</p>
+
+<div class="button-container" id="buttonContainer">
+<button class="btn btn-yes" id="yesBtn">YES 💖</button>
+<button class="btn btn-no" id="noBtn">No 😢</button>
+</div>
+</section>
+
+<section class="success-section" id="successSection">
+<h2>YAY! YOU SAID YES 🎉</h2>
+<p>You just made me the happiest person ever, Yash 💕</p>
+</section>
+
+<section class="love-letter">
+<div class="envelope" id="envelope">
+<div class="envelope-body">
+<div class="envelope-flap"></div>
+</div>
+</div>
+
+<div class="letter-content">
+<div class="letter-text">
+Dear <b>Yash</b>,<br><br>
+You came into my life and turned ordinary days into something magical.
+Your smile, your care, and your presence mean more to me than words can explain.<br><br>
+This Valentine’s Day, I just want you to know —
+you are incredibly special to me 💖<br><br>
+With all my heart,<br>
+<b>Lavanya ❤️</b>
+</div>
+</div>
+</section>
+
+<footer>
+Made with love by <b>Lavanya</b> ❤️<br>
+<small>P.S. You are my favorite person 💕</small>
+</footer>
+
+</div>
+
+<script>
+/* Floating hearts */
+const hearts=['💕','💖','💘','💝','❤️'];
+setInterval(()=>{
+const h=document.createElement('div');
+h.className='heart-float';
+h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+h.style.left=Math.random()*100+'%';
+document.getElementById('bgHearts').appendChild(h);
+setTimeout(()=>h.remove(),15000);
+},3000);
+
+/* Buttons */
+const noBtn=document.getElementById('noBtn');
+const yesBtn=document.getElementById('yesBtn');
+const music=document.getElementById('bgMusic');
+let attempts=0;
+
+noBtn.addEventListener('mouseenter',()=>{
+attempts++;
+noBtn.classList.add('running');
+noBtn.style.left=Math.random()*250+'px';
+noBtn.style.top=Math.random()*100+'px';
+noBtn.style.transform=`scale(${Math.max(0.4,1-attempts*0.15)})`;
+
+yesBtn.style.transform=`scale(${1+attempts*0.2})`;
+yesBtn.style.padding=`${20+attempts*5}px ${50+attempts*10}px`;
+
+if(attempts>6){
+noBtn.style.opacity='0';
+noBtn.style.pointerEvents='none';
+}
+});
+
+yesBtn.addEventListener('click',()=>{
+document.getElementById('buttonContainer').style.display='none';
+document.getElementById('successSection').classList.add('show');
+music.play(); // 🎵 MUSIC STARTS HERE
+});
+
+/* Envelope */
+document.getElementById('envelope').onclick=()=>{
+document.getElementById('envelope').classList.toggle('open');
+};
+</script>
+
+</body>
+</html>
